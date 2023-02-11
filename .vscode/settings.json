@@ -1,8 +1,0 @@
-{
-    "editor.bracketPairColorization.enabled": true,
-    "editor.guides.bracketPairs": true,
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "files.eol": "\n",
-    "javascript.format.semicolons": "remove",
-    "typescript.format.semicolons": "remove"
-}
