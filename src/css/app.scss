@@ -1,0 +1,85 @@
+// app global css in SCSS form
+:root {
+    box-sizing: border-box;
+
+    font-family: 'Asap', 'Zen Maru Gothic', sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+
+    color: #222;
+    background-color: #f5f2eb;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+}
+
+:-webkit-autofill,
+:-webkit-autofill:hover, 
+:-webkit-autofill:focus,
+:-webkit-autofill:active {
+    box-shadow: 0 0 0 30px #fff inset !important;
+}
+
+a {
+    text-decoration: inherit;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+}
+
+#q-app {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+}
+
+.q-btn {
+    text-transform: none;
+}
+
+.q-icon {
+    font-weight: 500;
+}
+
+.q-card {
+    box-shadow: rgba(80, 73, 67, 0.2) 0 2px 8px;
+}
+
+.q-layout:focus-visible {
+    outline: 0;
+}
+
+.q-layout.q-layout--standard {
+    height: 100%;
+}
+
+.q-page-container {
+    height: 100%;
+}
+
+.q-tab__label {
+    font-size: inherit;
+}
+
+.q-tab--inactive {
+    opacity: 0.67;
+}
+
+.q-timeline h6 {
+    font-size: 1.25rem;
+}
+.q-timeline__subtitle {
+    font-size: 0.875rem;
+    opacity: 0.75;
+}
+
+.cursor-pointer input {
+    cursor: pointer !important;
+}

@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site": "kakeibo-qcli-pwa",
+    "public": "dist/pwa",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
