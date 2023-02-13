@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { doc, getDoc, setDoc } from '@firebase/firestore'
 import { onAuthStateChanged, signInWithEmailAndPassword, signInAnonymously, User } from '@firebase/auth'
@@ -8,11 +8,11 @@ import { palette } from 'src/components/palette'
 
 const router = useRouter()
 
-const email = ref('')
+const userId = ref('')
 const pass = ref('')
 const isPwd = ref(true)
 
-const isErr = ref(false)
+const errMsg = ref('')
 const isLoad = ref(false)
 
 const confirmGuest = ref(false)
@@ -39,7 +39,6 @@ const init = async (user: User) => {
 }
 
 const unsubscribe = onAuthStateChanged(auth, async (user) => {
-    console.log('unsubscribe')
     if (user) {
         console.log('sign in')
         await init(user)
@@ -49,14 +48,23 @@ const unsubscribe = onAuthStateChanged(auth, async (user) => {
 
 const onSubmit = async (e: Event) => {
     e.preventDefault()
-    isLoad.value = true
-    await signInWithEmailAndPassword(auth, email.value, pass.value)
-        .catch((error: Error) => {
-            console.error(error.message)
-            isErr.value = true
-        })
 
-    unsubscribe()
+    isLoad.value = true
+    if (userId.value && pass.value) {
+        const email = `${userId.value}@kakeibo.app`
+        await signInWithEmailAndPassword(auth, email, pass.value)
+            .then(() => unsubscribe())
+            .catch((e: Error) => {
+                console.log(e.message)
+                if (/user-not-found|invalid-email/.test(e.message)) errMsg.value = '存在しないユーザーIDです。'
+                else if (/wrong-password/.test(e.message)) errMsg.value = 'パスワードが違います。'
+                else errMsg.value = '認証できませんでした。'
+            })
+    } else if (!userId.value) {
+        errMsg.value = 'ユーザーIDを入力してください。'
+    } else if (!pass.value) {
+        errMsg.value = 'パスワードを入力してください。'
+    }
     isLoad.value = false
 }
 
@@ -68,17 +76,21 @@ const onGuestSignIn = async () => {
     isLoad.value = false
 }
 
+onBeforeUnmount(()=> {
+    unsubscribe()
+})
+
 </script>
     
 <template>
-    <div class="container">
+    <div class="u-inner">
         <h2>サインイン</h2>
-        <p v-if="isErr" class="text-red">
+        <p v-if="errMsg" class="text-red">
             <q-icon name="sym_r_error" size="1.25em" />
-            メールアドレスまたはパスワードが違います。
+            {{ errMsg }}
         </p>
-        <form @submit="onSubmit" class="q-gutter-y-lg">
-            <q-input type="email" v-model="email" label="メールアドレス" class="full-width u-bg-white" />
+        <form @submit="onSubmit" novalidate class="q-gutter-y-lg">
+            <q-input type="email" v-model="userId" label="ユーザーID" class="full-width u-bg-white" />
             <q-input :type="isPwd ? 'password' : 'text'" v-model="pass" label="パスワード" class="full-width u-bg-white">
                 <template v-slot:append>
                     <q-icon :name="isPwd ? 'sym_r_visibility_off' : 'sym_r_visibility'" class="cursor-pointer"
@@ -90,7 +102,7 @@ const onGuestSignIn = async () => {
         </form>
         <q-separator class="q-my-lg" />
         <q-btn @click="confirmGuest = true" label="ゲストとして利用する" flat color="brown-7" class="row q-mx-auto q-mb-sm" />
-        <q-btn @click="router.push('/sendemail')" label="アカウントを新規作成" flat color="brown-7" class="row q-mx-auto" />
+        <q-btn @click="router.push('/signup')" label="アカウントを新規作成" flat color="brown-7" class="row q-mx-auto" />
         <q-dialog v-model="confirmGuest">
             <q-card class="confirm-card">
                 <q-card-section>
@@ -108,15 +120,9 @@ const onGuestSignIn = async () => {
 </template>
     
 <style scoped lang="scss">
-.container {
-    width: 400px;
-    max-width: 90%;
-    margin: 0 auto;
-}
-
 h2 {
     margin: 0;
-    padding: 48px 0 20px;
+    padding: 16px 0 20px;
     text-align: center;
 }
 

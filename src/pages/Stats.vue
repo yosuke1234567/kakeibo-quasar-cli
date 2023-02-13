@@ -74,10 +74,10 @@ onMounted(async () => {
 
 // ページネーション
 const navigateBar = async (margin: number) => {
-    if ((monthNum.value + margin) <= -6) {
+    if ((monthNum.value + margin) < 1) {
         yearNum.value = yearNum.value - 1
         monthNum.value = monthNum.value + margin + 12
-    } else if ((monthNum.value + margin) >= 18) {
+    } else if ((monthNum.value + margin) > 12) {
         yearNum.value = yearNum.value + 1
         monthNum.value = monthNum.value + margin - 12
     } else {

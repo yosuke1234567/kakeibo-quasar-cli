@@ -1,26 +1,29 @@
 <script setup lang="ts">
-import { ActionCodeSettings, isSignInWithEmailLink, signInWithEmailLink, sendSignInLinkToEmail } from '@firebase/auth'
+import { ActionCodeSettings, sendSignInLinkToEmail } from '@firebase/auth'
 import { auth } from 'src/firebase'
 import { ref } from 'vue'
 
 const email = ref<string | null>('')
 const sent = ref(false)
+const isLoad = ref(false)
 
 const onSendEmail = async (e: Event) => {
     e.preventDefault()
 
     const actionCodeSettings: ActionCodeSettings = {
-        url: `${window.location.origin}/#/updatepass`,
+        url: `${window.location.origin}/#/signup`,
         handleCodeInApp: true
     }
 
     if (email.value) {
+        isLoad.value = true
         await sendSignInLinkToEmail(auth, email.value, actionCodeSettings)
-            .then(() => {
-                window.localStorage.setItem("emailForSignIn", email.value!)
-                sent.value = true
+            .then(() => sent.value = true)
+            .catch((error: Error) => {
+                alert('メールを送信できませんでした。')
+                console.error(error.message)
             })
-            .catch((error: Error) => console.error(error.message))
+        isLoad.value = false
     }
 }
 </script>
@@ -39,6 +42,7 @@ const onSendEmail = async (e: Event) => {
             <q-btn type="submit" label="送信" unelevated color="secondary" text-color="initial" class="full-width" />
         </form>
     </div>
+    <q-inner-loading :showing="isLoad" />
 </template>
 
 <style lang="scss" scoped>
