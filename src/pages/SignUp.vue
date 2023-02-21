@@ -51,7 +51,10 @@ const onSubmit = async (e: Event) => {
 
 <template>
     <div class="u-inner">
-        <h2>サインアップ</h2>
+        <div class="heading">
+            <q-btn to="/signin" label="戻る" icon="sym_r_navigate_before" color="brown-7" flat dense class="back-btn" />
+            <h2>サインアップ</h2>
+        </div>
         <form @submit="onSubmit" novalidate class="q-gutter-y-lg">
             <q-input type="email" v-model="userId" label="ユーザーID（6文字以上）" class="full-width u-bg-white" />
             <p v-if="idErr">{{ idErr }}</p>
@@ -92,10 +95,21 @@ const onSubmit = async (e: Event) => {
 </template>
 
 <style lang="scss" scoped>
+.heading {
+    position: relative;
+}
+
+.back-btn {
+    position: absolute;
+    top: 12px;
+    left: 0;
+}
+
 h2 {
     margin: 0;
     padding: 16px 0 20px;
     text-align: center;
+    font-size: 1.25rem;
 }
 
 p {
