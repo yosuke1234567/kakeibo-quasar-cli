@@ -26,7 +26,7 @@ export const updateMonthlyData = async (
         amount: 0,
         category: e.type
     }))
-    console.log(docs)
+    // console.log(docs)
 
     for (let i = 0; i < docs.length; i++) {
         for (let j = 0; j < thisMonthStats.length; j++) {

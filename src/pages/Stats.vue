@@ -88,7 +88,6 @@ const navigateBar = async (margin: number) => {
     setLabels()
 
     barValue.value = await getBarValue(chartLabels.value)
-    console.log(barValue.value)
 
     margin > 0 ? setMonth(0) : setMonth(5)
 }

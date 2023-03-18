@@ -19,7 +19,7 @@ export const getMonthlyData = async (monthArg: number) => {
         }
     })
 
-    console.log(docs)
+    // console.log(docs)
 
     return docs
 }

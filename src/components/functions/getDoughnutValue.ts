@@ -30,7 +30,7 @@ export const getDoughnutValue = async (monthStr: string, categories: OptionCateg
                     }
                 }
             }
-            console.log(chartValue)
+            // console.log(chartValue)
             return chartValue
         } else {
             return []

@@ -62,7 +62,7 @@ const options: ChartOptions<'bar'> = {
         padding: 20
     },
     onClick(event, elements, chart) {
-        console.log(event, elements, chart)
+        // console.log(event, elements, chart)
         if(elements[0]) {
             props.setMonth(elements[0].index)
         }
